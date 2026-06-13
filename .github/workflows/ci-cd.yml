@@ -35,8 +35,12 @@ jobs:
 
             - name: deploy output file to instance
               run: |
+                    ssh -i ~/.ssh/id_rsa ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} "
+                        sudo mkdir -p /opt/backend
+                    "
                     scp -i ~/.ssh/id_rsa app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/opt/backend/app
-                    ssh -i ~/.ssh/id_rsa ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} \
-                    "sudo systemctl restart backend"
+                    ssh -i ~/.ssh/id_rsa ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} "
+                        sudo systemctl restart backend
+                    "
 
 
