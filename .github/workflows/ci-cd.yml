@@ -1,0 +1,32 @@
+name: CI-CD pipeline
+
+on:
+    push:
+        branches: ["main"]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: pull codebase
+              uses: actions/checkout@v6
+
+            - name: setup go
+              uses: actions/setup-go@v5
+              with:
+                go-version: "1.25.x"
+
+            - name: test code
+              run: go test ./tests
+            
+            - name: build output binary
+              run: go build . -o app
+            
+            - name: deploy output file to instance
+              run: |
+                    scp -i ${{secrets.SSH_KEY}} app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/opt/backend/app
+                    ssh -i ${{secrets.SSH_KEY}} ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} \
+                    "sudo systemctl restart backend"
+
+
