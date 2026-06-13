@@ -29,6 +29,10 @@ jobs:
                    echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
                    chmod 600 ~/.ssh/id_rsa
 
+            - name: trust server
+              run: |
+                    ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
             - name: deploy output file to instance
               run: |
                     scp -i ~/.ssh/id_rsa app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/opt/backend/app
