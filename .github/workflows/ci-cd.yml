@@ -21,7 +21,7 @@ jobs:
               run: go test ./tests
             
             - name: build output binary
-              run: go build . -o app
+              run: go build -o app .
             
             - name: deploy output file to instance
               run: |
