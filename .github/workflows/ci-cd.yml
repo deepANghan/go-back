@@ -23,10 +23,16 @@ jobs:
             - name: build output binary
               run: go build -o app .
             
+            - name: setup ssh
+              run: |
+                   mkdir -p ~/.ssh
+                   echo "${{secrets.SSH_KEY}}" > ~/.ssh/id_rsa
+                   chmod 600 ~/.ssh/id_rsa
+
             - name: deploy output file to instance
               run: |
-                    scp -i ${{secrets.SSH_KEY}} app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/opt/backend/app
-                    ssh -i ${{secrets.SSH_KEY}} ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} \
+                    scp -i ~/.ssh/id_rsa app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/opt/backend/app
+                    ssh -i ~/.ssh/id_rsa ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} \
                     "sudo systemctl restart backend"
 
 
