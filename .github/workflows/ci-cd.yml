@@ -38,8 +38,9 @@ jobs:
                     ssh -i ~/.ssh/id_rsa ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} "
                         sudo mkdir -p /opt/backend
                     "
-                    scp -i ~/.ssh/id_rsa app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/opt/backend/app
+                    scp -i ~/.ssh/id_rsa app ${{secrets.USERNAME}}@${{secrets.SERVER_IP}}:/home/ubuntu/app
                     ssh -i ~/.ssh/id_rsa ${{secrets.USERNAME}}@${{secrets.SERVER_IP}} "
+                        sudo mv /home/ubuntu/app /opt/backend/app &&
                         sudo systemctl restart backend
                     "
 
